@@ -15,12 +15,15 @@
     </ul>
     <h3 @click="changeMessage">{{ message }}</h3>
     <h4>{{ reversedMessage }}</h4>
+    <a-button type="primary">Primary</a-button>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { getMenus } from '@/api/utils';
+import { Button } from 'ant-design-vue';
+Vue.component(Button.name, Button)
 
 @Component
 export default class HelloWorld extends Vue {
