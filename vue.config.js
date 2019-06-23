@@ -8,6 +8,25 @@ module.exports = {
     }
   },
   devServer: {
-    
-  }
+    proxy: {
+      '/hrm/api': {
+        target: 'http://192.168.1.25:10751/', // Dev环境
+        changeOrigin: true,
+        autoRewrite: true,
+        cookieDomainRewrite: true,
+        pathRewrite: {
+          '^/hrm/api/': '/'
+        }
+      },
+      '/mock/api': {
+        target: 'https://www.easy-mock.com/mock/5b471707cf484b33b42c35ce/chensd/', // easy mock
+        changeOrigin: true,
+        autoRewrite: true,
+        cookieDomainRewrite: true,
+        pathRewrite: {
+          '^/mock/api/': '/'
+        }
+      }
+    }
+  },
 }

@@ -20,6 +20,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { getMenus } from '@/api/utils';
 
 @Component
 export default class HelloWorld extends Vue {
@@ -39,15 +40,17 @@ export default class HelloWorld extends Vue {
   }
 
   public onToggleLanguage(): void {
-    let lang = this.$i18n.locale;
-    let targetLang = lang === 'zh' ? 'en' : 'zh';
+    const lang = this.$i18n.locale;
+    const targetLang = lang === 'zh' ? 'en' : 'zh';
     this.$i18n.locale = targetLang;
     this.$store.dispatch('setLanguage', targetLang);
   }
 
   // life cycle: private: 生命周期不应该公开给其他组件，而 methods 有可能用 Emit 来传递消息
   private created(): void {
-    console.log('created');
+    getMenus().then((response) => {
+      console.log(response);
+    })
   }
 
   private mounted(): void {
