@@ -1,0 +1,12 @@
+{
+  "msg": {
+    "message": "hello i18n !!",
+    "login": "Login",
+    "Username": "Username",
+    "Password": "Password",
+    "Captcha": "Captcha",
+    "Language": "Language",
+    "zh": "Chinese",
+    "en": "English"
+  }
+}

@@ -1,6 +1,8 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <h2>{{ $t('msg.zh') }}</h2>
+    <button type="button" @click="onToggleLanguage">toggle language</button>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -11,22 +13,8 @@
       <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
       <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript" target="_blank" rel="noopener">typescript</a></li>
     </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <h3 @click="changeMessage">{{ message }}</h3>
+    <h4>{{ reversedMessage }}</h4>
   </div>
 </template>
 
@@ -36,6 +24,43 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
+
+  // data
+  private message = 'Hello World!';
+
+  // computed
+  private get reversedMessage(): string {
+    return this.message.split('').reverse().join('');
+  }
+
+  // methods
+  public changeMessage(): void {
+    this.message = 'Good Bye!';
+  }
+
+  public onToggleLanguage(): void {
+    let lang = this.$i18n.locale;
+    let targetLang = lang === 'zh' ? 'en' : 'zh';
+    this.$i18n.locale = targetLang;
+    this.$store.dispatch('setLanguage', targetLang);
+  }
+
+  // life cycle: private: 生命周期不应该公开给其他组件，而 methods 有可能用 Emit 来传递消息
+  private created(): void {
+    console.log('created');
+  }
+
+  private mounted(): void {
+    console.log('mounted');
+  }
+
+  private updated(): void {
+    console.log('updated');
+  }
+
+  private destroyed(): void {
+    console.log('destroyed');
+  }
 }
 </script>
 
