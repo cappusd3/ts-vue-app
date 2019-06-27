@@ -2,6 +2,8 @@ import { login, logout } from '@/api/login'
 import { AxiosResponse } from 'axios';
 
 const user = {
+  namespaced: true,
+
   state: {
     token: '',
     name: '',
