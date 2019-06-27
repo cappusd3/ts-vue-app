@@ -1,6 +1,10 @@
-import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
-import Store from '@/store';
-
+import axios, { AxiosResponse, AxiosRequestConfig, AxiosError } from 'axios';
+import store from '@/store';
+import { notification } from 'ant-design-vue';
+// import Vue from 'vue';
+import {
+  ACCESS_TOKEN
+} from '@/store/mutation-types';
 const baseURL = process.env.VUE_APP_URL_MOCK;
 
 /**
@@ -8,24 +12,46 @@ const baseURL = process.env.VUE_APP_URL_MOCK;
  */
 const service = axios.create({
   baseURL,
-  timeout: 0, // 请求超时时间
-  maxContentLength: 4000,
+  timeout: 3000, // 请求超时时间
 });
+
+const err = (error: AxiosError) => {
+  if (error.response) {
+    const data = error.response.data
+    const token = localStorage.getItem(ACCESS_TOKEN)
+    if (error.response.status === 403) {
+      notification.error({
+        message: 'Forbidden',
+        description: data.message
+      })
+    }
+    if (error.response.status === 401 && !(data.result && data.result.isLogin)) {
+      notification.error({
+        message: 'Unauthorized',
+        description: 'Authorization verification failed'
+      })
+      if (token) {
+        store.dispatch('Logout').then(() => {
+          setTimeout(() => {
+            window.location.reload()
+          }, 1500)
+        })
+      }
+    }
+  }
+  return Promise.reject(error)
+}
 
 service.interceptors.request.use((config: AxiosRequestConfig) => {
+  const token = localStorage.getItem(ACCESS_TOKEN);
+  if (token) {
+    config.headers.Access_Token = token;
+  }
   return config;
-}, (error: any) => {
-  Promise.reject(error);
-});
+}, err);
 
 service.interceptors.response.use((response: AxiosResponse) => {
-  if (response.status >= 200 && response.status < 300) {
-    return response.data;
-  } else {
-    return Promise.reject('error');
-  }
-}, (error: any) => {
-  return Promise.reject(error);
-});
+  return response.data;
+}, err);
 
 export default service;

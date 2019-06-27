@@ -37,6 +37,9 @@ const user = {
     Login({ commit }: any, userInfo: any) {
       return new Promise((resolve, reject) => {
         login(userInfo).then((response: AxiosResponse) => {
+          if (response.status > 200) {
+            reject(response);
+          }
           const result = response.data;
           commit('SET_TOKEN', result.token);
           resolve();

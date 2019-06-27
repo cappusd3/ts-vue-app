@@ -1,23 +1,23 @@
 const responseBody = {
   message: '',
   timestamp: 0,
-  result: null,
+  data: null,
   code: 0,
-  _headers: {},
-  _status: 0
+  headers: {},
+  status: 0
 }
 
-export const builder = (data: any, message: string = '', code: number = 0, headers = {}) => {
-  responseBody.result = data
+export const builder = (data: any, message: string = '', status: number = 0, headers = {}) => {
+  responseBody.data = data
   if (message !== undefined && message !== null) {
     responseBody.message = message
   }
-  if (code !== undefined && code !== 0) {
-    responseBody.code = code
-    responseBody._status = code
+  if (status !== undefined && status !== 0) {
+    responseBody.code = status
+    responseBody.status = status
   }
   if (headers !== null && typeof headers === 'object' && Object.keys(headers).length > 0) {
-    responseBody._headers = headers
+    responseBody.headers = headers
   }
   responseBody.timestamp = new Date().getTime()
   return responseBody

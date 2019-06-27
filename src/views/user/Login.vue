@@ -93,7 +93,7 @@
       <a-form-item>
         <a-checkbox v-decorator="['rememberMe']">自动登录</a-checkbox>
         <router-link
-          :to="{ name: 'recover', params: { user: 'aaa' } }"
+          :to="{ name: 'about', params: { user: 'aaa' } }"
           class="forge-password"
           style="float: right;">
           忘记密码
@@ -119,6 +119,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { State, Getter, Action, Mutation, namespace } from 'vuex-class';
+import { timeFix } from '@/utils/util';
+import md5 from 'md5';
 
 const User = namespace('user');
 
@@ -193,7 +195,7 @@ export default class UserLogin extends Vue {
         console.log('login form', values);
         const loginParams = { ...values };
         loginParams[!state.loginType ? 'email' : 'username'] = values.username
-        loginParams.password = values.password;
+        loginParams.password = md5(values.password);
         Login(loginParams)
           .then((res: any) => this.loginSuccess(res))
           .catch((error: Error) => this.requestFailed(error))
@@ -209,9 +211,25 @@ export default class UserLogin extends Vue {
   }
 
 
-  public loginSuccess(res: any) {}
+  public loginSuccess(res: any) {
+    console.log(res);
+    this.$router.push({ name: 'about' });
 
-  public requestFailed(err: Error) {}
+    setTimeout(() => {
+      this.$notification.success({
+        message: '欢迎',
+        description: `${timeFix()}, 欢迎回来`,
+      })
+    }, 1000)
+  }
+
+  public requestFailed(err: any) {
+    this.$notification.error({
+      message: '错误',
+      description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
+      duration: 4
+    })
+  }
 
   // class-based 类型 不支持 data
   private data() {
