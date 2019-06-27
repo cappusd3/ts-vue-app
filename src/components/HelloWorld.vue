@@ -15,6 +15,13 @@
     </ul>
     <h3 @click="changeMessage">{{ message }}</h3>
     <h4>{{ reversedMessage }}</h4>
+    <!-- <a-radio-group :defaultValue="null" @change="changeLocale">
+      <a-radio-button key="en" :value="null">English</a-radio-button>
+      <a-radio-button key="cn" :value="zhCN">中文</a-radio-button>
+    </a-radio-group> -->
+    <div class="example">
+      <a-pagination :defaultCurrent="1" :total="50" showSizeChanger />
+    </div>
     <a-button type="primary">Primary</a-button>
   </div>
 </template>
@@ -22,8 +29,11 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { getMenus } from '@/api/utils';
-import { Button } from 'ant-design-vue';
-Vue.component(Button.name, Button)
+import { Button, Pagination } from 'ant-design-vue';
+
+// TODO: 这里在按需加载中，以下这一步为何不整合进去？
+Vue.use(Button);
+Vue.use(Pagination);
 
 @Component
 export default class HelloWorld extends Vue {
