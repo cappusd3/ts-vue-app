@@ -1,5 +1,5 @@
 import service from '@/utils/request';
-
+import api from './index';
 /**
  * login func
  * parameter: {
@@ -26,5 +26,13 @@ export function logout() {
     headers: {
       'Content-Type': 'application/json;charset=UTF-8',
     },
+  })
+}
+
+export function getSmsCaptcha(parameter: { mobile: string }) {
+  return service({
+    url: api.SendSms,
+    method: 'post',
+    data: parameter
   })
 }

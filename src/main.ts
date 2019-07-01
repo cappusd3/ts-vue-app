@@ -13,7 +13,9 @@ import './mock';
 // 全局引入 ant-desing-vue
 // 包括样式
 import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css'
+import 'ant-design-vue/dist/antd.less';
+
+import './permission';
 
 Vue.config.productionTip = false;
 

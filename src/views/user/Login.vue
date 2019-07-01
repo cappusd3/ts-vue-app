@@ -45,7 +45,7 @@
               placeholder="密码：admin or ant.design"
               v-decorator="[
                 'password',
-                { rule: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur' }
+                { rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur' }
               ]"
             >
               <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"></a-icon>
@@ -57,8 +57,8 @@
             <a-input size="large" type="text" placeholder="手机号"
               v-decorator="[
                 'mobile',
-                { rule: [{ required: true, pattern: /^1[3578]\d{9}$/,
-                  message: '请输入你的手机号' }], validateTrigger: 'chnage' }
+                { rules: [{ required: true, pattern: /^1[3578]\d{9}$/,
+                  message: '请输入你的手机号' }], validateTrigger: 'change' }
               ]" >
               <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"></a-icon>
             </a-input>
@@ -78,11 +78,11 @@
             </a-col>
             <a-col class="gutter-row" :span="8">
               <a-button
-                class="getCaptche"
+                class="getCaptcha"
                 tabindex="-1"
                 size="large"
                 :disabled="state.smsSendBtn"
-                @click.stop.prevent="getCaptche"
+                @click.stop.prevent="getCaptcha"
                 v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"
               ></a-button>
             </a-col>
@@ -119,8 +119,9 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { State, Getter, Action, Mutation, namespace } from 'vuex-class';
-import { timeFix } from '@/utils/util';
 import md5 from 'md5';
+import { timeFix } from '@/utils/util';
+import { getSmsCaptcha } from '@/api/login';
 
 const User = namespace('user');
 
@@ -176,7 +177,7 @@ export default class UserLogin extends Vue {
     this.customActiveKey = key;
   }
 
-  public handleSubmit(e: Event) {
+  public handleSubmit(e: HTMLFormElement) {
     e.preventDefault();
     const {
       form: { validateFields },
@@ -231,6 +232,41 @@ export default class UserLogin extends Vue {
     })
   }
 
+  public getCaptcha(e: any) {
+    e.preventDefault();
+    const { form: { validateFields }, state } = this;
+
+    validateFields(['mobile'], { force: true }, (err: any, values: any) => {
+      if (!err) {
+        state.smsSendBtn = true;
+
+        const interval = window.setInterval(() => {
+          if (state.time-- <= 0) {
+            state.time = 60;
+            state.smsSendBtn = false;
+            window.clearInterval(interval);
+          }
+        }, 1000);
+        const hide = this.$message.loading('验证码发送中....', 0);
+        getSmsCaptcha({ mobile: values.mobile }).then((res: any) => {
+          // TODO: 这里如何进行类型声明: type Promise<any> can not assignt to type Function
+          setTimeout(hide as any, 2500);
+          this.$notification.success({
+            message: '提示',
+            description: `验证码获取成功，您的验证码为: ${res.data.captcha}`,
+            duration: 8,
+          })
+        }).catch((error: any) => {
+          setTimeout(hide as any, 1);
+          clearInterval(interval);
+          state.time = 60;
+          state.smsSendBtn = false;
+          this.requestFailed(error);
+        })
+      }
+    })
+  }
+
   // class-based 类型 不支持 data
   private data() {
     return {
@@ -243,3 +279,51 @@ export default class UserLogin extends Vue {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.user-layout-login {
+  label {
+    font-size: 14px;
+  }
+
+  .getCaptcha {
+    display: block;
+    width: 100%;
+    height: 40px;
+  }
+
+  .forge-password {
+    font-size: 14px;
+  }
+
+  button.login-button {
+    padding: 0 15px;
+    font-size: 16px;
+    height: 40px;
+    width: 100%;
+  }
+
+  .user-login-other {
+    text-align: left;
+    margin-top: 24px;
+    line-height: 22px;
+
+    .item-icon {
+      font-size: 24px;
+      color: rgba(0, 0, 0, 0.2);
+      margin-left: 16px;
+      vertical-align: middle;
+      cursor: pointer;
+      transition: color 0.3s;
+
+      &:hover {
+        color: #1890ff;
+      }
+    }
+
+    .register {
+      float: right;
+    }
+  }
+}
+</style>

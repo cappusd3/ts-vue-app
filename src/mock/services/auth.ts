@@ -27,15 +27,15 @@ const login = (options: any) => {
     'roleId': 'admin',
     'lang': 'zh-CN',
     'token': '4291d7da9005377ec9aec4a71ea837f'
-  }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
+  }, '', 200, { 'Custom-Header': Mock.mock('@guid') });
 }
 
 const logout = () => {
-  return builder({}, '[测试接口] 注销成功')
+  return builder({}, '[测试接口] 注销成功');
 }
 
 const smsCaptcha = () => {
-  return builder({ captcha: Mock.mock('@integer(10000, 99999)') })
+  return builder({ captcha: Mock.mock('@integer(10000, 99999)') });
 }
 
 const twofactor = () => {

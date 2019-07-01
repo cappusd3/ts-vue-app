@@ -1,0 +1,21 @@
+@import './index.less';
+
+.layout.ant-layout {
+  height: auto;
+  overflow-x: hidden;
+
+  // 手机端 or 平板电脑 全局样式
+  &.mobile,
+  &.tablet {
+    .ant-layout-content {
+      .content {
+        margin: 24px 0 0;
+      }
+    }
+  }
+
+  &.ant-layout-has-sider {
+    flex-direction: row;
+  }
+
+}

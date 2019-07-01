@@ -1,4 +1,31 @@
-import { UserLayout } from '@/layouts';
+import { UserLayout, BasicLayout, RouteView } from '@/layouts';
+
+export const asyncRouteMap = [
+  {
+    path: '/',
+    name: 'index',
+    component: BasicLayout,
+    meta: { title: '首页' },
+    redirect: '/dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        redirect: '/dashboard/workplace',
+        component: RouteView,
+        meta: { title: '仪表盘', keepAlive: true },
+        children: [
+          {
+            path: '/dashboard/workplace',
+            name: 'workplace',
+            component: () => import('@/views/dashboard/Workplace.vue'),
+            meta: { title: '工作台', keepAlive: true }
+          }
+        ]
+      }
+    ]
+  }
+]
 
 /**
  * 基础路由
@@ -6,7 +33,7 @@ import { UserLayout } from '@/layouts';
  */
 export const constantRouterMap = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: () => import('@/components/HelloWorld.vue'),
   },

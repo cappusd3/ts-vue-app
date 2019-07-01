@@ -38,6 +38,11 @@
     }],
     "object-literal-key-quotes": [true, "consistent"],
     "no-var-requires": false,
-    "max-line-length": false
+    "max-line-length": false,
+    "no-var-keyword": true,
+    "comment-format": [
+      true,
+      "check-space"
+    ]
   }
 }
