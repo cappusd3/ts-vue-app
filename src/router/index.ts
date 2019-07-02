@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import { constantRouterMap, asyncRouteMap } from '@/config/router.config'
+import { constantRouterMap } from '@/config/router.config'
 
 Vue.use(Router);
 
-const routers = [...asyncRouteMap, ...constantRouterMap];
+const routers = [...constantRouterMap];
 export default new Router({
   routes: routers,
 })

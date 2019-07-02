@@ -24,7 +24,7 @@ import SideMenu from '@/components/Menu/SideMenu.vue';
 import { State, Getter, Action, Mutation, namespace } from 'vuex-class';
 import { MenuItem, RouterItem } from '@/interface';
 import { debuglog } from 'util';
-
+import { asyncRouteMap, constantRouterMap } from '@/config/router.config';
 const Permission = namespace('permission');
 
 @Component({
@@ -35,7 +35,7 @@ const Permission = namespace('permission');
 export default class BasicLayout extends Vue {
   public device: string = 'desktop';
   public collapsed: boolean = false;
-  public menus: RouterItem[] = [];
+  public menus: MenuItem[] = [];
   // 这个可以放在共同地方控制
   public navTheme: string = 'dark';
   public layoutMode: string = 'topmenu';

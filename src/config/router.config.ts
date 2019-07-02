@@ -6,24 +6,41 @@ export const asyncRouteMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: '首页' },
-    redirect: '/dashboard',
+    redirect: '/dashboard/workplace',
     children: [
+      // dashboard
       {
-        path: 'dashboard',
+        path: '/dashboard',
         name: 'dashboard',
         redirect: '/dashboard/workplace',
         component: RouteView,
-        meta: { title: '仪表盘', keepAlive: true },
+        meta: { title: '仪表盘', keepAlive: true, icon: 'compass' },
         children: [
           {
             path: '/dashboard/workplace',
-            name: 'workplace',
+            name: 'Workplace',
             component: () => import('@/views/dashboard/Workplace.vue'),
             meta: { title: '工作台', keepAlive: true }
+          },
+          {
+            path: '/dashboard/analysis',
+            name: 'Analysis',
+            component: () => import('@/views/dashboard/Workplace.vue'),
+            meta: { title: '分析页', keepAlive:  false }
           }
         ]
+      },
+      {
+        path: '/dashboard2',
+        name: 'dashboard2',
+        redirect: '/dashboard/workplace',
+        component: RouteView,
+        meta: { title: '仪表盘2', keepAlive: true, icon: 'compass' },
       }
     ]
+  },
+  {
+    path: '*', redirect: '/404', hidden: true
   }
 ]
 

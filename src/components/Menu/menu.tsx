@@ -23,6 +23,7 @@ export default class SMenu extends Vue {
 
   @Watch('collapsed')
   public onChangeValue(newVal: boolean, oldVal: boolean) {
+    console.log('onChangeValue', newVal)
     if (newVal) {
       this.cachedOpenKeys = this.openKeys.concat();
       this.openKeys = [];
@@ -38,7 +39,8 @@ export default class SMenu extends Vue {
   // methods
   // select menu item
   private onOpenChange(openKeys: string[]) {
-
+    console.log('onOpenChange', openKeys);
+    this.openKeys = openKeys;
   }
 
   private updateMenu() {
@@ -53,10 +55,19 @@ export default class SMenu extends Vue {
         this.selectedKeys = [selectedRouteItem.path];
       }
     }
+    const openKeys: string[] = [];
+    if (this.mode === 'inline') {
+      routes.forEach((item) => {
+        openKeys.push(item.path)
+      });
+    }
+
+    if (!this.collapsed) {
+      this.openKeys = openKeys;
+    }
   }
 
   // render method
-  //
   private renderItem(menu: MenuItem) {
     if (!menu.hidden) {
       return menu.children && !menu.hideChildrenInMenu ? this.renderSubMenu(menu) : this.renderMenuItem(menu);
@@ -113,6 +124,8 @@ export default class SMenu extends Vue {
           <span>{menu.meta.title}</span>
         </span>
         {itemArr}
+        {/* <a-menu-item key="7">Option 7</a-menu-item>
+        <a-menu-item key="8">Option 8</a-menu-item> */}
       </SubMenu>
     )
   }
@@ -137,7 +150,7 @@ export default class SMenu extends Vue {
     const props = {
       mode,
       theme,
-      openKeys,
+      openKeys
     }
 
     const on = {
@@ -147,7 +160,6 @@ export default class SMenu extends Vue {
       },
       openChange: this.onOpenChange,
     }
-
     const menuTree = menus.map((item: MenuItem) => {
       if (item.hidden) {
         return null;

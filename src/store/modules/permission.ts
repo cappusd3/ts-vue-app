@@ -18,6 +18,7 @@ const permission = {
     GenerateRoutes({ commit }: any, data: any) {
       return new Promise((resolve) => {
         // const { roles } = data;
+        console.log('GenerateRoutes')
         commit('SET_ROUTES', asyncRouteMap);
         resolve()
       })
