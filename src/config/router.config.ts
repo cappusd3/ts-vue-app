@@ -31,11 +31,10 @@ export const asyncRouteMap = [
         ]
       },
       {
-        path: '/dashboard2',
-        name: 'dashboard2',
-        redirect: '/dashboard/workplace',
-        component: RouteView,
-        meta: { title: '仪表盘2', keepAlive: true, icon: 'compass' },
+        path: '/about',
+        name: 'about',
+        component: () => import('@/views/About.vue'),
+        meta: { title: '关于', keepAlive: true, icon: 'compass' },
       }
     ]
   },
@@ -53,11 +52,6 @@ export const constantRouterMap = [
     path: '/home',
     name: 'home',
     component: () => import('@/components/HelloWorld.vue'),
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import('@/views/About.vue'),
   },
   {
     path: '/user',

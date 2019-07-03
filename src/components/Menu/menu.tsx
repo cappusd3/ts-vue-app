@@ -14,7 +14,7 @@ export default class SMenu extends Vue {
 
   public openKeys: string[] = [];
   public selectedKeys: string[] = [];
-  public cachedOpenKeys: string[] = [];
+  // public cachedOpenKeys: string[] = [];
 
   // TODO: 这块作用？
   get rootSubmenuKeys() {
@@ -25,15 +25,11 @@ export default class SMenu extends Vue {
   public onChangeValue(newVal: boolean, oldVal: boolean) {
     console.log('onChangeValue', newVal)
     if (newVal) {
-      this.cachedOpenKeys = this.openKeys.concat();
+      // this.cachedOpenKeys = this.openKeys.concat();
       this.openKeys = [];
     } else {
-      this.openKeys = this.cachedOpenKeys;
+      // this.openKeys = this.cachedOpenKeys;
     }
-  }
-
-  private mounted() {
-    this.updateMenu();
   }
 
   // methods
@@ -143,6 +139,10 @@ export default class SMenu extends Vue {
     return (
       <Icon {...{ props }}></Icon>
     )
+  }
+
+  private mounted() {
+    this.updateMenu();
   }
 
   private render() {

@@ -19,3 +19,54 @@
   }
 
 }
+
+.sidemenu {
+  .ant-header-fixedHeader {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 9;
+    width: 100%;
+    transition: width 0.2s;
+
+    &.ant-header-side-opened {
+      width: calc(100% - 256px);
+    }
+
+    &.ant-header-side-closed {
+      width: calc(100% - 80px);
+    }
+  }
+}
+
+.header {
+  height: 64px;
+  padding: 0 12px 0 0;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  position: relative;
+}
+
+
+// 菜单样式
+.sider {
+  box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
+
+  .ant-layout-sider-children {
+    overflow-y: hidden;
+
+    &:hover {
+      overflow-y: auto;
+    }
+  }
+
+  &.ant-fixed-sidemenu {
+    position: fixed;
+    height: 100%;
+  }
+
+}
+
