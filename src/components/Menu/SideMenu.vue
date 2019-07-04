@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
 import { State } from 'vuex-class';
 import SMenu from './index';
 @Component({
@@ -29,7 +29,6 @@ import SMenu from './index';
 export default class SideMenu extends Vue {
   @Prop({ default: 'inline' }) public mode?: string;
   @Prop({ default: 'dark' }) public theme?: string;
-  //  TODO: 这里 默认值为何不生效
   @Prop({ default: false }) public collapsible?: boolean;
   @Prop({ default: false }) public collapsed?: boolean;
   @Prop({ default: [] }) public menus!: [];
@@ -40,9 +39,9 @@ export default class SideMenu extends Vue {
     return true;
   }
 
-  // TODO: 改为 vuex-class 写法
+  @Emit('menuSelect')
   public onSelect(obj: any) {
-    this.$emit('menuSelect', obj);
+    return obj;
   }
 }
 </script>

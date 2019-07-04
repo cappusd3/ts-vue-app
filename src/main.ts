@@ -6,15 +6,13 @@ import App from './App.vue';
 import router from './router/index';
 import store from './store/index';
 import i18n from './i18n';
-
 // import Storage from 'vue-ls';
+
 // const options = {
 //   namespace: 'vuejs__', // key prefix
 //   name: 'ls', // name variable Vue.[ls] or this.[$ls],
 //   storage: 'local', // storage name session, local, memory
 // };
-
-// Vue.use(Storage, options);
 
 // mock
 import './mock';
@@ -29,6 +27,7 @@ import './permission';
 Vue.config.productionTip = false;
 
 Vue.use(Antd);
+// Vue.use(Storage, options);
 
 new Vue({
   router,

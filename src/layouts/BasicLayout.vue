@@ -16,8 +16,16 @@
         @toggle="toggle"
       ></global-header>
       <!-- layout content -->
+      <a-layout-content :style="{ height: '100%', margin: '24px 24px 0', paddingTop: '0' }">
+        <transition name="page-transition">
+          <route-view></route-view>
+        </transition>
+      </a-layout-content>
 
       <!-- layout footer -->
+      <a-layout-footer>
+        <global-footer></global-footer>
+      </a-layout-footer>
     </a-layout>
   </a-layout>
 </template>
@@ -29,15 +37,19 @@ import { MenuItem, RouterItem } from '@/interface';
 import { triggerWindowResizeEvent } from '@/utils/util';
 import SideMenu from '@/components/Menu/SideMenu.vue';
 import { asyncRouteMap, constantRouterMap } from '@/config/router.config';
+import RouteView from './RouteView';
 import GlobalHeader from '@/components/GlobalHeader';
+import GlobalFooter from '@/components/GlobalFooter';
 
 const Permission = namespace('permission');
 const App = namespace('app');
 
 @Component({
   components: {
+    RouteView,
     SideMenu,
     GlobalHeader,
+    GlobalFooter,
   }
 })
 export default class BasicLayout extends Vue {
@@ -49,9 +61,11 @@ export default class BasicLayout extends Vue {
   public layoutMode: string = 'sidemenu';
   public contentWidth: string = '';
   public sidebarOpened: boolean = true;
-  @Permission.State('addRouters') private mainMenu!: any[];
+
   @App.State('fixSiderbar') public fixSiderbar!: boolean;
-  @Action('app/setSideBar') private setSidebar: any
+  @Permission.State('addRouters') private mainMenu!: any[];
+
+  @App.Action('setSideBar') private setSidebar: any
 
   get contentPaddingLeft() {
     if (!this.fixSiderbar) {
